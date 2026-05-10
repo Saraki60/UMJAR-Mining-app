@@ -1,4 +1,4 @@
-
+8
 <!DOCTYPE html>
 <html>
 <head>
@@ -141,6 +141,25 @@ Mining Speed: 2.5 UMJAR/hour
 </div>
 
 </div>
+<script>
+let balance = 245.85;
 
+function startMining() {
+  setInterval(() => {
+    balance += 0.01;
+    document.getElementById("balance").innerHTML =
+      balance.toFixed(2) + " UMJAR";
+  }, 1000);
+}
+</script>
+
+
+  
 </body>
 </html>
+
+
+
+
+
+
