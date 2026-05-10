@@ -12,7 +12,7 @@ export default function UMJARMiningApp() {
       <p className="text-center text-zinc-400 mb-6">
         Next Generation Crypto Mining Ecosystem
       </p>
-    <>
+    
       <div className="bg-black rounded-2xl p-5 border border-zinc-800 mb-6 text-center">
         <div className="w-32 h-32 mx-auto rounded-full border-4 border-yellow-500 flex items-center justify-center animate-pulse">
           <span className="text-yellow-400 text-xl font-bold">MINING</span>
