@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "908328509401",
+    "project_id": "umjar-mining",
+    "storage_bucket": "umjar-mining.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908328509401:android:091eebb00b4e6b060c43c8",
+        "android_client_info": {
+          "package_name": "com.umjar.mining"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908328509401-mndc6dclj8ape16makfj7fql97fqnlie.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFA4U9WHJaDM2Q7hIU3ZJO9bJzFmDOh5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908328509401-mndc6dclj8ape16makfj7fql97fqnlie.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
