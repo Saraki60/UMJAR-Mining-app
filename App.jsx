@@ -1,5 +1,7 @@
-export default function UMJARMiningApp() { return ( <div className="min-h-screen bg-black text-white p-6"> <div className="max-w-md mx-auto"> <div className="bg-zinc-900 rounded-3xl shadow-2xl p-6 border border-yellow-500"> <h1 className="text-3xl font-bold text-center text-yellow-400 mb-2"> UMJAR Mining </h1>
-
+import React from "react";
+import { initializeApp } from "firebase/app";
+export default function UMJARMiningApp() {
+  return (
 <div className="bg-black border border-yellow-500 rounded-2xl p-3 mb-4 text-center">
         <p className="text-yellow-400 text-sm font-bold">Official UMJAR Token Address</p>
         <p className="text-zinc-300 text-xs break-all mt-2">
