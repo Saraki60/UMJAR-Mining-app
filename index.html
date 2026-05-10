@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>UMJAR Mining</title>
 
 <style>
@@ -61,6 +62,21 @@ background:gold;
 color:black;
 font-size:18px;
 font-weight:bold;
+cursor:pointer;
+}
+
+input{
+width:100%;
+padding:15px;
+margin-top:10px;
+border:none;
+border-radius:15px;
+font-size:16px;
+}
+
+.user{
+margin-top:10px;
+color:#00ff66;
 }
 
 </style>
@@ -77,6 +93,26 @@ UMJAR
 </div>
 
 <h3>REAL CRYPTO MINING</h3>
+
+<div class="user" id="userEmail">
+Not Logged In
+</div>
+
+<input type="email" id="email" placeholder="Email">
+
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="signup()">
+SIGN UP
+</button>
+
+<button onclick="login()">
+LOGIN
+</button>
+
+<button onclick="logout()">
+LOGOUT
+</button>
 
 <div class="balance" id="balance">
 0 UMJ
@@ -164,7 +200,117 @@ WITHDRAW
 
 </div>
 
-<script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+signOut,
+onAuthStateChanged
+
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAmLTvCWirFSpbpEpQTDX-4p3JAarIr3R4",
+
+authDomain: "umjar-mining.firebaseapp.com",
+
+projectId: "umjar-mining",
+
+storageBucket: "umjar-mining.firebasestorage.app",
+
+messagingSenderId: "908328509401",
+
+appId: "1:908328509401:web:7e7e8ceb078efe500c43c8",
+
+measurementId: "G-TE3NN8W0HT"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+window.signup = function(){
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+createUserWithEmailAndPassword(auth,email,password)
+
+.then(() => {
+
+alert("Account Created");
+
+})
+
+.catch((error) => {
+
+alert(error.message);
+
+});
+
+}
+
+window.login = function(){
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+signInWithEmailAndPassword(auth,email,password)
+
+.then(() => {
+
+alert("Login Successful");
+
+})
+
+.catch((error) => {
+
+alert(error.message);
+
+});
+
+}
+
+window.logout = function(){
+
+signOut(auth)
+
+.then(() => {
+
+alert("Logged Out");
+
+});
+
+}
+
+onAuthStateChanged(auth,(user)=>{
+
+if(user){
+
+document.getElementById("userEmail").innerHTML =
+user.email;
+
+}else{
+
+document.getElementById("userEmail").innerHTML =
+"Not Logged In";
+
+}
+
+});
 
 let balance =
 parseInt(localStorage.getItem("umjarBalance")) || 0;
@@ -182,12 +328,15 @@ updateBalance();
 updateTimer();
 
 if(mining){
+
 document.getElementById("status").innerHTML =
 "Mining Active";
+
 startIntervals();
+
 }
 
-function updateBalance(){
+window.updateBalance = function(){
 
 if(isNaN(balance)){
 balance = 0;
@@ -203,7 +352,7 @@ localStorage.setItem("umjarBalance", balance);
 
 }
 
-function updateTimer(){
+window.updateTimer = function(){
 
 let hours =
 Math.floor(miningTime / 3600);
@@ -221,11 +370,14 @@ String(seconds).padStart(2,"0");
 
 }
 
-function startMining(){
+window.startMining = function(){
 
 if(mining){
+
 alert("Mining Already Running");
+
 return;
+
 }
 
 mining = true;
@@ -237,7 +389,7 @@ startIntervals();
 
 }
 
-function startIntervals(){
+window.startIntervals = function(){
 
 clearInterval(miningInterval);
 clearInterval(timerInterval);
@@ -276,7 +428,7 @@ updateTimer();
 
 }
 
-function dailyBonus(){
+window.dailyBonus = function(){
 
 balance += 100;
 
@@ -286,13 +438,13 @@ alert("100 UMJ Added");
 
 }
 
-function openMall(){
+window.openMall = function(){
 
 alert("UMJAR Mall Opened");
 
 }
 
-function startInvestment(){
+window.startInvestment = function(){
 
 if(balance < 500){
 
@@ -310,7 +462,7 @@ alert("Investment Started");
 
 }
 
-function buyNFT(price){
+window.buyNFT = function(price){
 
 if(balance < price){
 
@@ -328,7 +480,7 @@ alert("NFT Purchased");
 
 }
 
-function copyLink(){
+window.copyLink = function(){
 
 let text =
 document.getElementById("refLink").innerText;
@@ -339,7 +491,7 @@ alert("Referral Link Copied");
 
 }
 
-function withdrawUMJ(){
+window.withdrawUMJ = function(){
 
 if(balance < 1000){
 
