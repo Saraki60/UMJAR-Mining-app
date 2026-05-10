@@ -1,3 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UMJAR Mining</title>
+
+<style>
+
+body{
+background:black;
+color:white;
+font-family:Arial;
+padding:20px;
+margin:0;
+}
+
+.app{
+max-width:420px;
+margin:auto;
+}
+
+.box{
+background:#111;
+border:2px solid gold;
+border-radius:25px;
+padding:20px;
+margin-top:20px;
+text-align:center;
+}
+
+.logo{
+font-size:50px;
+font-weight:bold;
+color:gold;
+}
+
+.balance{
+font-size:45px;
+margin-top:20px;
+}
+
+.timer{
+font-size:25px;
+color:gold;
+margin-top:10px;
+}
+
+.status{
+color:#00ff66;
+margin-top:10px;
+}
+
+button{
+width:100%;
+padding:15px;
+margin-top:15px;
+border:none;
+border-radius:20px;
+background:gold;
+color:black;
+font-size:18px;
+font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="box">
+
+<div class="logo">
+UMJAR
+</div>
+
+<h3>REAL CRYPTO MINING</h3>
+
+<div class="balance" id="balance">
+0 UMJ
+</div>
+
+<div class="timer" id="timer">
+24:00:00
+</div>
+
+<div class="status" id="status">
+Mining Not Started
+</div>
+
+<button onclick="startMining()">
+START MINING
+</button>
+
+<button onclick="dailyBonus()">
+DAILY BONUS
+</button>
+
+</div>
+
+<div class="box">
+
+<h2>UMJAR MALL</h2>
+
+<button onclick="openMall()">
+OPEN MALL
+</button>
+
+</div>
+
+<div class="box">
+
+<h2>INVESTMENT</h2>
+
+<button onclick="startInvestment()">
+START INVESTMENT
+</button>
+
+</div>
+
+<div class="box">
+
+<h2>NFT MARKETPLACE</h2>
+
+<button onclick="buyNFT(500)">
+BUY NFT
+</button>
+
+</div>
+
+<div class="box">
+
+<h2>REFERRAL</h2>
+
+<div id="refLink">
+https://umjar.app/ref/UMJ001
+</div>
+
+<button onclick="copyLink()">
+COPY LINK
+</button>
+
+</div>
+
+<div class="box">
+
+<h2>WALLET</h2>
+
+<div>
+Balance:
+<span id="walletBalance">
+0
+</span>
+UMJ
+</div>
+
+<button onclick="withdrawUMJ()">
+WITHDRAW
+</button>
+
+</div>
+
+</div>
+
 <script>
 
 let balance =
@@ -30,22 +196,14 @@ balance = 0;
 document.getElementById("balance").innerHTML =
 balance + " UMJ";
 
-let wallet =
-document.getElementById("walletBalance");
-
-if(wallet){
-wallet.innerHTML = balance;
-}
+document.getElementById("walletBalance").innerHTML =
+balance;
 
 localStorage.setItem("umjarBalance", balance);
 
 }
 
 function updateTimer(){
-
-if(miningTime < 0){
-miningTime = 0;
-}
 
 let hours =
 Math.floor(miningTime / 3600);
@@ -72,15 +230,8 @@ return;
 
 mining = true;
 
-miningTime = 86400;
-
-localStorage.setItem("mining","true");
-localStorage.setItem("miningTime",miningTime);
-
 document.getElementById("status").innerHTML =
 "Mining Active";
-
-alert("24H Mining Started");
 
 startIntervals();
 
@@ -108,8 +259,6 @@ clearInterval(timerInterval);
 
 mining = false;
 
-localStorage.setItem("mining","false");
-
 document.getElementById("status").innerHTML =
 "Mining Finished";
 
@@ -129,25 +278,9 @@ updateTimer();
 
 function dailyBonus(){
 
-let today =
-new Date().toDateString();
-
-let claimed =
-localStorage.getItem("bonusDate");
-
-if(claimed === today){
-
-alert("Bonus Already Claimed Today");
-
-return;
-
-}
-
 balance += 100;
 
 updateBalance();
-
-localStorage.setItem("bonusDate", today);
 
 alert("100 UMJ Added");
 
@@ -200,25 +333,9 @@ function copyLink(){
 let text =
 document.getElementById("refLink").innerText;
 
-if(navigator.clipboard){
-
-navigator.clipboard.writeText(text)
-.then(function(){
+navigator.clipboard.writeText(text);
 
 alert("Referral Link Copied");
-
-})
-.catch(function(){
-
-alert(text);
-
-});
-
-}else{
-
-alert(text);
-
-}
 
 }
 
@@ -237,3 +354,6 @@ alert("Withdrawal Request Sent");
 }
 
 </script>
+
+</body>
+</html>
