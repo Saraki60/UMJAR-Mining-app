@@ -7,5 +7,29 @@
 </head>
 <body>
   <div id="root"></div>
+
+
+
+
+<script type="module">
+
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAmLTvCWirFSpbpEpQTDX-4p3JAarIr3R4",
+  authDomain: "umjar-mining.firebaseapp.com",
+  projectId: "umjar-mining",
+  storageBucket: "umjar-mining.firebasestorage.app",
+  messagingSenderId: "908328509401",
+  appId: "1:908328509401:web:ddf7f37c5b52d4870c43c8",
+  measurementId: "G-Z17F6FF2WE"
+};
+
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+</script>
+
 </body>
 </html>
