@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { initializeApp } from "firebase/app";
 
@@ -50,6 +50,24 @@ const [investment,setInvestment] = useState(0);
 const [referrals,setReferrals] = useState(0);
 
 const [walletAddress,setWalletAddress] = useState("");
+
+const [coins,setCoins] = useState([]);
+
+useEffect(()=>{
+
+fetch(
+"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,binancecoin"
+)
+
+.then((res)=>res.json())
+
+.then((data)=>{
+
+setCoins(data);
+
+});
+
+},[]);
 
 async function signup(){
 
@@ -325,6 +343,57 @@ className="w-full bg-yellow-500 text-black font-bold py-5 rounded-2xl mt-8 text-
 >
 START MINING
 </button>
+
+</div>
+
+<div className="bg-zinc-900 p-5 rounded-3xl mt-6">
+
+<h2 className="text-yellow-400 text-2xl font-bold mb-4">
+LIVE MARKET
+</h2>
+
+{coins.map((coin)=>(
+
+<div
+key={coin.id}
+className="bg-zinc-800 p-4 rounded-2xl mb-3 flex justify-between items-center"
+>
+
+<div>
+
+<p className="text-white font-bold">
+{coin.symbol.toUpperCase()}
+</p>
+
+<p className="text-zinc-400 text-sm">
+{coin.name}
+</p>
+
+</div>
+
+<div className="text-right">
+
+<p className="text-yellow-400 font-bold">
+${coin.current_price}
+</p>
+
+<p
+className={
+coin.price_change_percentage_24h > 0
+? "text-green-400"
+: "text-red-400"
+}
+>
+
+{coin.price_change_percentage_24h.toFixed(2)}%
+
+</p>
+
+</div>
+
+</div>
+
+))}
 
 </div>
 
