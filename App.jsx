@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 
-// Import logo daga public folder
-import logo from "./public/file_00000000681c71f4b7e5470f479fc72b.png";
-
 // Bottom Navigation Component
 const BottomNav = () => {
   const location = useLocation();
@@ -21,16 +18,25 @@ const BottomNav = () => {
       bottom: 0,
       left: 0,
       width: "100%",
-      background: "black",
-      color: "gold",
       display: "flex",
       justifyContent: "space-around",
-      padding: "10px 0",
-      fontWeight: "bold"
+      background: "#222",
+      padding: "12px 0",
+      borderTop: "2px solid gold",
+      fontWeight: "bold",
+      color: "gold",
     }}>
       {navItems.map(item => (
-        <Link key={item.path} to={item.path}
-          style={{ color: location.pathname === item.path ? "yellow" : "gold" }}>
+        <Link 
+          key={item.path} 
+          to={item.path} 
+          style={{
+            textDecoration: "none",
+            color: location.pathname === item.path ? "orange" : "gold",
+            fontSize: "14px",
+            transition: "0.3s"
+          }}
+        >
           {item.name}
         </Link>
       ))}
@@ -39,60 +45,95 @@ const BottomNav = () => {
 };
 
 const App = () => {
-  const [email, setEmail] = useState("ummujaafarcampany@gmail.com");
-  const [balance, setBalance] = useState(158);
-  const [timer, setTimer] = useState(23*3600 + 52*60 + 21); // 23:52:21 in seconds
+  const [timer, setTimer] = useState(0);
 
-  // Countdown timer for Mining
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimer(prev => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
+    const interval = setInterval(() => setTimer(prev => prev + 1), 1000);
     return () => clearInterval(interval);
   }, []);
 
-  const formatTime = (seconds) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
-    return `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
-  };
-
   return (
     <Router>
-      <div style={{ paddingBottom: "60px", textAlign: "center", fontFamily: "sans-serif" }}>
+      <div style={{
+        minHeight: "100vh",
+        background: "linear-gradient(to bottom, #111, #333)",
+        color: "#fff",
+        textAlign: "center",
+        paddingBottom: "80px",
+        fontFamily: "Arial, sans-serif"
+      }}>
         {/* Logo */}
-        <img src={logo} alt="UMJAR Logo" style={{ width: "150px", marginTop: "20px" }} />
+        <img 
+          src={process.env.PUBLIC_URL + '/logo.png'} 
+          alt="UMJAR Logo" 
+          style={{ width: "160px", marginTop: "25px", borderRadius: "12px", boxShadow: "0 0 15px gold" }} 
+        />
 
-        {/* Balance */}
-        <h2 style={{ color: "gold", marginTop: "20px" }}>{balance} UMJ</h2>
-        <p style={{ color: "limegreen" }}>{email}</p>
+        {/* Balance Card */}
+        <div style={{
+          background: "#000",
+          margin: "20px auto",
+          padding: "20px",
+          borderRadius: "15px",
+          width: "90%",
+          maxWidth: "350px",
+          boxShadow: "0 0 20px #ffcc00"
+        }}>
+          <h1 style={{ fontSize: "32px", color: "gold", margin: "0" }}>158 UMJ</h1>
+          <p style={{ margin: "5px 0", color: "#0f0" }}>ummujaafarcampany@gmail.com</p>
+        </div>
 
         {/* Auth Buttons */}
-        <div style={{ margin: "20px 0" }}>
-          <button style={{ margin: "5px", padding: "10px 20px", background: "gold", border: "none", fontWeight: "bold" }}>SIGN UP</button>
-          <button style={{ margin: "5px", padding: "10px 20px", background: "gold", border: "none", fontWeight: "bold" }}>LOGIN</button>
-          <button style={{ margin: "5px", padding: "10px 20px", background: "gold", border: "none", fontWeight: "bold" }}>LOGOUT</button>
+        <div style={{ margin: "15px 0" }}>
+          {["SIGN UP", "LOGIN", "LOGOUT"].map(text => (
+            <button 
+              key={text} 
+              style={{
+                margin: "5px",
+                padding: "12px 25px",
+                background: "gold",
+                border: "none",
+                borderRadius: "8px",
+                fontWeight: "bold",
+                cursor: "pointer",
+                transition: "0.3s"
+              }}
+              onMouseOver={e => e.target.style.background = "orange"}
+              onMouseOut={e => e.target.style.background = "gold"}
+            >
+              {text}
+            </button>
+          ))}
         </div>
 
         {/* Mining Button */}
-        <div style={{ margin: "30px 0" }}>
+        <div style={{ margin: "40px 0" }}>
           <button style={{
-            width: "150px",
-            height: "150px",
+            width: "140px",
+            height: "140px",
             borderRadius: "50%",
-            background: "black",
-            color: "gold",
             fontSize: "20px",
             fontWeight: "bold",
-            border: "2px solid gold"
-          }}>MINING</button>
-          <p style={{ marginTop: "10px", fontSize: "18px", color: "gold" }}>{formatTime(timer)}</p>
+            background: "gold",
+            border: "none",
+            boxShadow: "0 0 25px #ffcc00",
+            cursor: "pointer",
+            transition: "0.3s"
+          }}
+          onMouseOver={e => e.target.style.transform = "scale(1.1)"}
+          onMouseOut={e => e.target.style.transform = "scale(1)"}
+          >
+            MINING
+          </button>
+          <p style={{ marginTop: "20px", fontSize: "18px" }}>
+            {new Date(timer * 1000).toISOString().substr(11, 8)}
+          </p>
         </div>
 
         {/* Bottom Navigation */}
         <BottomNav />
 
+        {/* Routes */}
         <Routes>
           <Route path="/" element={<div>Home Page</div>} />
           <Route path="/markets" element={<div>Markets Page</div>} />
