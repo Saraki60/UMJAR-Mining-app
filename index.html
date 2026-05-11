@@ -1,4 +1,13 @@
-<!-- KA MAYE GURBIN <style> DINKA DA WANNAN KAWAI -->
+<!-- KA BAR FIREBASE DA JAVASCRIPT DINKA YADDA YAKE -->
+<!-- WANNAN HTML + CSS NE MAI PREMIUM KUMA LOGIN ZAI CI GABA DA AIKI -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>UMJAR PREMIUM</title>
 
 <style>
 
@@ -12,7 +21,7 @@ font-family:Arial;
 body{
 background:#0d0d0d;
 background-image:
-linear-gradient(to bottom,#1c1400,#0d0d0d);
+linear-gradient(to bottom,#1b1400,#0d0d0d);
 color:white;
 padding:15px;
 }
@@ -25,7 +34,7 @@ padding-bottom:100px;
 
 .box{
 background:rgba(24,24,24,0.96);
-backdrop-filter:blur(10px);
+backdrop-filter:blur(12px);
 border:1px solid rgba(255,215,0,0.12);
 border-radius:32px;
 padding:22px;
@@ -42,11 +51,11 @@ letter-spacing:4px;
 text-shadow:0 0 20px rgba(255,215,0,0.45);
 }
 
-h3{
+.small{
 text-align:center;
 margin-top:5px;
-font-weight:normal;
 color:#ddd;
+font-size:14px;
 }
 
 .user{
@@ -190,8 +199,45 @@ color:#ffd700;
 }
 
 </style>
+</head>
 
-<!-- SAI KA SAKA WANNAN A KASA DA BALANCE -->
+<body>
+
+<div class="app">
+
+<div class="box">
+
+<div class="logo">
+UMJAR
+</div>
+
+<div class="small">
+PREMIUM REAL MINING
+</div>
+
+<div class="user" id="userEmail">
+Not Logged In
+</div>
+
+<input type="email" id="email" placeholder="Email">
+
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="signup()">
+SIGN UP
+</button>
+
+<button onclick="login()">
+LOGIN
+</button>
+
+<button onclick="logout()">
+LOGOUT
+</button>
+
+<div class="balance" id="balance">
+0 UMJ
+</div>
 
 <div class="circle">
 
@@ -201,7 +247,101 @@ MINING
 
 </div>
 
-<!-- SAI KA SAKA WANNAN A KARSHEN BODY -->
+<div class="timer" id="timer">
+24:00:00
+</div>
+
+<div class="status" id="status">
+Mining Not Started
+</div>
+
+<button onclick="startMining()">
+START MINING
+</button>
+
+<button onclick="dailyBonus()">
+DAILY BONUS
+</button>
+
+</div>
+
+<div class="box">
+
+<h2 style="color:#ffd700;">
+MINING STATS
+</h2>
+
+<div class="row">
+<div>Today Mining</div>
+
+<div class="green">
++1.2500 UMJ
+</div>
+</div>
+
+<div class="row">
+<div>Total Mined</div>
+
+<div id="walletBalance">
+0 UMJ
+</div>
+</div>
+
+</div>
+
+<div class="banner">
+
+<h2>
+INVITE & EARN BIG
+</h2>
+
+<p>
+Invite friends and earn commissions.
+</p>
+
+<button onclick="copyLink()">
+INVITE NOW
+</button>
+
+</div>
+
+<div class="box">
+
+<h2 style="color:#ffd700;">
+WALLET
+</h2>
+
+<button onclick="withdrawUMJ()">
+WITHDRAW
+</button>
+
+</div>
+
+<div class="box">
+
+<h2 style="color:#ffd700;">
+INVESTMENT
+</h2>
+
+<button onclick="startInvestment()">
+START INVESTMENT
+</button>
+
+</div>
+
+<div class="box">
+
+<h2 style="color:#ffd700;">
+NFT MARKETPLACE
+</h2>
+
+<button onclick="buyNFT(500)">
+BUY NFT
+</button>
+
+</div>
+
+</div>
 
 <div class="nav">
 
@@ -222,3 +362,8 @@ MINING
 </div>
 
 </div>
+
+<!-- KA SAKA ORIGINAL JAVASCRIPT + FIREBASE DINKA A NAN -->
+
+</body>
+</html>
