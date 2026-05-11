@@ -1,6 +1,4 @@
-<!-- KA BAR FIREBASE DA JAVASCRIPT DINKA YADDA YAKE -->
-<!-- WANNAN HTML + CSS NE MAI PREMIUM KUMA LOGIN ZAI CI GABA DA AIKI -->
-
+<!-- KA BAR FIREBASE + JAVASCRIPT ORIGINAL DINKA -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +13,7 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial;
+font-family:Arial,sans-serif;
 }
 
 body{
@@ -363,7 +361,305 @@ BUY NFT
 
 </div>
 
-<!-- KA SAKA ORIGINAL JAVASCRIPT + FIREBASE DINKA A NAN -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+signOut,
+onAuthStateChanged
+
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAmLTvCWirFSpbpEpQTDX-4p3JAarIr3R4",
+
+authDomain: "umjar-mining.firebaseapp.com",
+
+projectId: "umjar-mining",
+
+storageBucket: "umjar-mining.firebasestorage.app",
+
+messagingSenderId: "908328509401",
+
+appId: "1:908328509401:web:7e7e8ceb078efe500c43c8",
+
+measurementId: "G-TE3NN8W0HT"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+window.signup = function(){
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+createUserWithEmailAndPassword(auth,email,password)
+
+.then(() => {
+
+alert("Account Created");
+
+})
+
+.catch((error) => {
+
+alert(error.message);
+
+});
+
+}
+
+window.login = function(){
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+signInWithEmailAndPassword(auth,email,password)
+
+.then(() => {
+
+alert("Login Successful");
+
+})
+
+.catch((error) => {
+
+alert(error.message);
+
+});
+
+}
+
+window.logout = function(){
+
+signOut(auth)
+
+.then(() => {
+
+alert("Logged Out");
+
+});
+
+}
+
+onAuthStateChanged(auth,(user)=>{
+
+if(user){
+
+document.getElementById("userEmail").innerHTML =
+user.email;
+
+}else{
+
+document.getElementById("userEmail").innerHTML =
+"Not Logged In";
+
+}
+
+});
+
+let balance =
+parseInt(localStorage.getItem("umjarBalance")) || 0;
+
+let mining =
+localStorage.getItem("mining") === "true";
+
+let miningTime =
+parseInt(localStorage.getItem("miningTime")) || 86400;
+
+let miningInterval = null;
+let timerInterval = null;
+
+updateBalance();
+updateTimer();
+
+if(mining){
+
+document.getElementById("status").innerHTML =
+"Mining Active";
+
+startIntervals();
+
+}
+
+window.updateBalance = function(){
+
+if(isNaN(balance)){
+balance = 0;
+}
+
+document.getElementById("balance").innerHTML =
+balance + " UMJ";
+
+document.getElementById("walletBalance").innerHTML =
+balance + " UMJ";
+
+localStorage.setItem("umjarBalance", balance);
+
+}
+
+window.updateTimer = function(){
+
+let hours =
+Math.floor(miningTime / 3600);
+
+let minutes =
+Math.floor((miningTime % 3600) / 60);
+
+let seconds =
+miningTime % 60;
+
+document.getElementById("timer").innerHTML =
+String(hours).padStart(2,"0") + ":" +
+String(minutes).padStart(2,"0") + ":" +
+String(seconds).padStart(2,"0");
+
+}
+
+window.startMining = function(){
+
+if(mining){
+
+alert("Mining Already Running");
+
+return;
+
+}
+
+mining = true;
+
+document.getElementById("status").innerHTML =
+"Mining Active";
+
+startIntervals();
+
+}
+
+window.startIntervals = function(){
+
+clearInterval(miningInterval);
+clearInterval(timerInterval);
+
+miningInterval = setInterval(function(){
+
+balance += 2;
+
+updateBalance();
+
+},5000);
+
+timerInterval = setInterval(function(){
+
+if(miningTime <= 0){
+
+clearInterval(miningInterval);
+clearInterval(timerInterval);
+
+mining = false;
+
+document.getElementById("status").innerHTML =
+"Mining Finished";
+
+return;
+
+}
+
+miningTime--;
+
+localStorage.setItem("miningTime", miningTime);
+
+updateTimer();
+
+},1000);
+
+}
+
+window.dailyBonus = function(){
+
+balance += 100;
+
+updateBalance();
+
+alert("100 UMJ Added");
+
+}
+
+window.copyLink = function(){
+
+navigator.clipboard.writeText(
+"https://umjar.app/ref/UMJ001"
+);
+
+alert("Referral Link Copied");
+
+}
+
+window.withdrawUMJ = function(){
+
+if(balance < 1000){
+
+alert("Minimum Withdrawal Is 1000 UMJ");
+
+return;
+
+}
+
+alert("Withdrawal Request Sent");
+
+}
+
+window.startInvestment = function(){
+
+if(balance < 500){
+
+alert("You Need 500 UMJ");
+
+return;
+
+}
+
+balance -= 500;
+
+updateBalance();
+
+alert("Investment Started");
+
+}
+
+window.buyNFT = function(price){
+
+if(balance < price){
+
+alert("Not Enough UMJ");
+
+return;
+
+}
+
+balance -= price;
+
+updateBalance();
+
+alert("NFT Purchased");
+
+}
+
+</script>
 
 </body>
 </html>
