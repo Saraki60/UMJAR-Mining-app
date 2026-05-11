@@ -3,518 +3,388 @@ import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 
 import {
-getAuth,
-createUserWithEmailAndPassword,
-signInWithEmailAndPassword,
-signOut
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
 } from "firebase/auth";
 
 import {
-getFirestore,
-doc,
-setDoc,
-getDoc,
-updateDoc
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc
 } from "firebase/firestore";
 
 const firebaseConfig = {
-apiKey: "AIzaSyAmLTvCWirFSpbpEpQTDX-4p3JAarIr3R4",
-authDomain: "umjar-mining.firebaseapp.com",
-projectId: "umjar-mining",
-storageBucket: "umjar-mining.firebasestorage.app",
-messagingSenderId: "908328509401",
-appId: "1:908328509401:web:7e7e8ceb078efe500c43c8",
-measurementId: "G-TE3NN8W0HT"
+  apiKey: "AIzaSyAmLTvCWirFSpbpEpQTDX-4p3JAarIr3R4",
+  authDomain: "umjar-mining.firebaseapp.com",
+  projectId: "umjar-mining",
+  storageBucket: "umjar-mining.firebasestorage.app",
+  messagingSenderId: "908328509401",
+  appId: "1:908328509401:web:7e7e8ceb078efe500c43c8",
+  measurementId: "G-TE3NN8W0HT"
 };
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
-
 const db = getFirestore(app);
 
 export default function UMJARExchange() {
 
-const [email,setEmail] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-const [password,setPassword] = useState("");
+  const [user, setUser] = useState(null);
 
-const [user,setUser] = useState(null);
+  const [balance, setBalance] = useState(0);
+  const [mining, setMining] = useState(false);
+  const [investment, setInvestment] = useState(0);
+  const [referrals, setReferrals] = useState(0);
+  const [walletAddress, setWalletAddress] = useState("");
 
-const [balance,setBalance] = useState(0);
+  const [coins, setCoins] = useState([]);
 
-const [mining,setMining] = useState(false);
+  // LOAD MARKET
+  useEffect(() => {
 
-const [investment,setInvestment] = useState(0);
+    async function loadCoins() {
+      try {
 
-const [referrals,setReferrals] = useState(0);
+        const res = await fetch(
+          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,binancecoin"
+        );
 
-const [walletAddress,setWalletAddress] = useState("");
+        const data = await res.json();
 
-const [coins,setCoins] = useState([]);
+        setCoins(data);
 
-useEffect(()=>{
+      } catch (err) {
+        console.log(err);
+      }
+    }
 
-fetch(
-"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,binancecoin"
-)
+    loadCoins();
 
-.then((res)=>res.json())
+  }, []);
 
-.then((data)=>{
+  // AUTH STATE
+  useEffect(() => {
 
-setCoins(data);
+    const unsub = onAuthStateChanged(auth, async(currentUser) => {
 
-});
+      if(currentUser){
 
-},[]);
+        setUser(currentUser);
 
-async function signup(){
+        const ref = doc(db, "users", currentUser.uid);
 
-try{
+        const snap = await getDoc(ref);
 
-const res =
-await createUserWithEmailAndPassword(
-auth,
-email,
-password
-);
+        if(snap.exists()){
 
-await setDoc(
-doc(db,"users",res.user.uid),
-{
-email,
-balance:0,
-mining:false,
-investment:0,
-referrals:0,
-walletAddress:"",
-withdrawPending:false
-}
-);
+          const data = snap.data();
 
-alert("Signup Success");
+          setBalance(data.balance || 0);
+          setMining(data.mining || false);
+          setInvestment(data.investment || 0);
+          setReferrals(data.referrals || 0);
+          setWalletAddress(data.walletAddress || "");
 
-}catch(err){
+        }
 
-alert(err.message);
+      } else {
 
-}
+        setUser(null);
 
-}
+      }
 
-async function login(){
+    });
 
-try{
+    return () => unsub();
 
-const res =
-await signInWithEmailAndPassword(
-auth,
-email,
-password
-);
+  }, []);
 
-setUser(res.user);
+  // SIGNUP
+  async function signup(){
 
-const ref =
-doc(db,"users",res.user.uid);
+    if(!email || !password){
+      alert("Enter Email And Password");
+      return;
+    }
 
-const snap =
-await getDoc(ref);
+    try{
 
-if(snap.exists()){
+      const res = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-setBalance(snap.data().balance);
+      await setDoc(
+        doc(db,"users",res.user.uid),
+        {
+          email,
+          balance:0,
+          mining:false,
+          investment:0,
+          referrals:0,
+          walletAddress:"",
+          withdrawPending:false
+        }
+      );
 
-setMining(snap.data().mining);
+      alert("Signup Success");
 
-setInvestment(snap.data().investment);
+    }catch(err){
 
-setReferrals(snap.data().referrals);
+      alert(err.message);
 
-setWalletAddress(
-snap.data().walletAddress
-);
+    }
 
-}
+  }
 
-alert("Login Success");
+  // LOGIN
+  async function login(){
 
-}catch(err){
+    try{
 
-alert(err.message);
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-}
+      alert("Login Success");
 
-}
+    }catch(err){
 
-async function logout(){
+      alert(err.message);
 
-await signOut(auth);
+    }
 
-setUser(null);
+  }
 
-alert("Logged Out");
+  // LOGOUT
+  async function logout(){
 
-}
+    await signOut(auth);
 
-async function startMining(){
+    alert("Logged Out");
 
-if(!user){
+  }
 
-alert("Login First");
+  // MINING
+  async function startMining(){
 
-return;
+    if(!user){
+      alert("Login First");
+      return;
+    }
 
-}
+    if(mining){
+      alert("Mining Already Active");
+      return;
+    }
 
-const newBalance =
-balance + 10;
+    try{
 
-setBalance(newBalance);
+      const newBalance = balance + 10;
 
-setMining(true);
+      setBalance(newBalance);
+      setMining(true);
 
-await updateDoc(
-doc(db,"users",user.uid),
-{
-balance:newBalance,
-mining:true
-}
-);
+      await updateDoc(
+        doc(db,"users",user.uid),
+        {
+          balance:newBalance,
+          mining:true
+        }
+      );
 
-alert("Mining Started");
+      alert("Mining Started");
 
-}
+    }catch(err){
 
-async function withdraw(){
+      alert(err.message);
 
-if(balance < 100){
+    }
 
-alert("Minimum Withdraw 100 UMJ");
+  }
 
-return;
+  // WITHDRAW
+  async function withdraw(){
 
-}
+    if(!user){
+      alert("Login First");
+      return;
+    }
 
-await updateDoc(
-doc(db,"users",user.uid),
-{
-withdrawPending:true
-}
-);
+    if(balance < 100){
+      alert("Minimum Withdraw 100 UMJ");
+      return;
+    }
 
-alert("Withdraw Request Sent");
+    try{
 
-}
+      await updateDoc(
+        doc(db,"users",user.uid),
+        {
+          withdrawPending:true
+        }
+      );
 
-async function invest(){
+      alert("Withdraw Request Sent");
 
-if(balance < 50){
+    }catch(err){
 
-alert("Need 50 UMJ");
+      alert(err.message);
 
-return;
+    }
 
-}
+  }
 
-const newBalance =
-balance - 50;
+  // INVEST
+  async function invest(){
 
-const newInvestment =
-investment + 50;
+    if(!user){
+      alert("Login First");
+      return;
+    }
 
-setBalance(newBalance);
+    if(balance < 50){
+      alert("Need 50 UMJ");
+      return;
+    }
 
-setInvestment(newInvestment);
+    try{
 
-await updateDoc(
-doc(db,"users",user.uid),
-{
-balance:newBalance,
-investment:newInvestment
-}
-);
+      const newBalance = balance - 50;
+      const newInvestment = investment + 50;
 
-alert("Investment Activated");
+      setBalance(newBalance);
+      setInvestment(newInvestment);
 
-}
+      await updateDoc(
+        doc(db,"users",user.uid),
+        {
+          balance:newBalance,
+          investment:newInvestment
+        }
+      );
 
-async function saveWallet(){
+      alert("Investment Activated");
 
-await updateDoc(
-doc(db,"users",user.uid),
-{
-walletAddress
-}
-);
+    }catch(err){
 
-alert("Wallet Saved");
+      alert(err.message);
 
-}
+    }
 
-function copyReferral(){
+  }
 
-navigator.clipboard.writeText(
-"https://umjar.app/ref/" +
-user.uid
-);
+  // SAVE WALLET
+  async function saveWallet(){
 
-alert("Referral Link Copied");
+    if(!user){
+      alert("Login First");
+      return;
+    }
 
-}
+    try{
 
-return(
+      await updateDoc(
+        doc(db,"users",user.uid),
+        {
+          walletAddress
+        }
+      );
 
-<div className="min-h-screen bg-black text-white p-4 pb-32">
+      alert("Wallet Saved");
 
-<h1 className="text-5xl font-bold text-yellow-400 text-center mb-6">
-UMJAR
-</h1>
+    }catch(err){
 
-<div className="bg-zinc-900 p-5 rounded-3xl border border-yellow-500">
+      alert(err.message);
 
-<h2 className="text-5xl font-bold text-yellow-400">
-{balance} UMJ
-</h2>
+    }
 
-<p className="text-green-400 mt-2 break-all">
-{user?.email}
-</p>
+  }
 
-<input
-type="email"
-placeholder="Email"
-className="w-full mt-4 p-4 rounded-2xl bg-zinc-800"
-onChange={(e)=>setEmail(e.target.value)}
-/>
+  // REFERRAL
+  function copyReferral(){
 
-<input
-type="password"
-placeholder="Password"
-className="w-full mt-4 p-4 rounded-2xl bg-zinc-800"
-onChange={(e)=>setPassword(e.target.value)}
-/>
+    if(!user){
+      alert("Login First");
+      return;
+    }
 
-<button
-onClick={signup}
-className="w-full bg-yellow-500 text-black font-bold py-4 rounded-2xl mt-4"
->
-SIGN UP
-</button>
+    navigator.clipboard.writeText(
+      "https://umjar.app/ref/" + user.uid
+    );
 
-<button
-onClick={login}
-className="w-full bg-yellow-500 text-black font-bold py-4 rounded-2xl mt-4"
->
-LOGIN
-</button>
+    alert("Referral Link Copied");
 
-<button
-onClick={logout}
-className="w-full bg-yellow-500 text-black font-bold py-4 rounded-2xl mt-4"
->
-LOGOUT
-</button>
+  }
 
-<div className="w-48 h-48 rounded-full border-8 border-yellow-500 mx-auto mt-10 flex items-center justify-center animate-pulse">
+  return(
 
-<h2 className="text-3xl text-yellow-400 font-bold">
-MINING
-</h2>
+    <div className="min-h-screen bg-black text-white p-4 pb-32">
 
-</div>
+      <h1 className="text-5xl font-bold text-yellow-400 text-center mb-6">
+        UMJAR
+      </h1>
 
-<div className="text-center mt-6">
+      <div className="bg-zinc-900 p-5 rounded-3xl border border-yellow-500">
 
-<p className="text-5xl text-yellow-400">
-{balance}
-</p>
+        <h2 className="text-5xl font-bold text-yellow-400">
+          {balance} UMJ
+        </h2>
 
-<p className="text-green-400 mt-2">
-{mining ? "Mining Active" : "Mining Stopped"}
-</p>
+        <p className="text-green-400 mt-2 break-all">
+          {user?.email}
+        </p>
 
-</div>
+        <input
+          type="email"
+          placeholder="Email"
+          className="w-full mt-4 p-4 rounded-2xl bg-zinc-800"
+          onChange={(e)=>setEmail(e.target.value)}
+        />
 
-<button
-onClick={startMining}
-className="w-full bg-yellow-500 text-black font-bold py-5 rounded-2xl mt-8 text-2xl"
->
-START MINING
-</button>
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full mt-4 p-4 rounded-2xl bg-zinc-800"
+          onChange={(e)=>setPassword(e.target.value)}
+        />
 
-</div>
+        <button
+          onClick={signup}
+          className="w-full bg-yellow-500 text-black font-bold py-4 rounded-2xl mt-4"
+        >
+          SIGN UP
+        </button>
 
-<div className="bg-zinc-900 p-5 rounded-3xl mt-6">
+        <button
+          onClick={login}
+          className="w-full bg-yellow-500 text-black font-bold py-4 rounded-2xl mt-4"
+        >
+          LOGIN
+        </button>
 
-<h2 className="text-yellow-400 text-2xl font-bold mb-4">
-LIVE MARKET
-</h2>
+        <button
+          onClick={logout}
+          className="w-full bg-red-500 text-white font-bold py-4 rounded-2xl mt-4"
+        >
+          LOGOUT
+        </button>
 
-{coins.map((coin)=>(
+      </div>
 
-<div
-key={coin.id}
-className="bg-zinc-800 p-4 rounded-2xl mb-3 flex justify-between items-center"
->
+    </div>
 
-<div>
-
-<p className="text-white font-bold">
-{coin.symbol.toUpperCase()}
-</p>
-
-<p className="text-zinc-400 text-sm">
-{coin.name}
-</p>
-
-</div>
-
-<div className="text-right">
-
-<p className="text-yellow-400 font-bold">
-${coin.current_price}
-</p>
-
-<p
-className={
-coin.price_change_percentage_24h > 0
-? "text-green-400"
-: "text-red-400"
-}
->
-
-{coin.price_change_percentage_24h.toFixed(2)}%
-
-</p>
-
-</div>
-
-</div>
-
-))}
-
-</div>
-
-<div className="bg-zinc-900 p-5 rounded-3xl mt-6">
-
-<h2 className="text-yellow-400 text-2xl font-bold mb-4">
-WALLET
-</h2>
-
-<input
-type="text"
-placeholder="Wallet Address"
-value={walletAddress}
-onChange={(e)=>setWalletAddress(e.target.value)}
-className="w-full p-4 rounded-2xl bg-zinc-800"
-/>
-
-<button
-onClick={saveWallet}
-className="w-full bg-yellow-500 text-black py-4 rounded-2xl mt-4 font-bold"
->
-SAVE WALLET
-</button>
-
-<button
-onClick={withdraw}
-className="w-full bg-yellow-500 text-black py-4 rounded-2xl mt-4 font-bold"
->
-WITHDRAW
-</button>
-
-</div>
-
-<div className="bg-zinc-900 p-5 rounded-3xl mt-6">
-
-<h2 className="text-yellow-400 text-2xl font-bold mb-4">
-INVESTMENT
-</h2>
-
-<p className="text-3xl text-yellow-400">
-{investment} UMJ
-</p>
-
-<button
-onClick={invest}
-className="w-full bg-yellow-500 text-black py-4 rounded-2xl mt-4 font-bold"
->
-START INVESTMENT
-</button>
-
-</div>
-
-<div className="bg-zinc-900 p-5 rounded-3xl mt-6">
-
-<h2 className="text-yellow-400 text-2xl font-bold mb-4">
-REFERRAL
-</h2>
-
-<p className="text-green-400">
-{referrals} Referrals
-</p>
-
-<button
-onClick={copyReferral}
-className="w-full bg-yellow-500 text-black py-4 rounded-2xl mt-4 font-bold"
->
-COPY REFERRAL LINK
-</button>
-
-</div>
-
-<div className="bg-zinc-900 p-5 rounded-3xl mt-6">
-
-<h2 className="text-yellow-400 text-2xl font-bold mb-4">
-UMJAR MALL
-</h2>
-
-<div className="grid grid-cols-2 gap-4">
-
-<div className="bg-zinc-800 p-5 rounded-2xl text-center">
-🛒 Shopping
-</div>
-
-<div className="bg-zinc-800 p-5 rounded-2xl text-center">
-💎 NFT Store
-</div>
-
-<div className="bg-zinc-800 p-5 rounded-2xl text-center">
-🎮 Gaming
-</div>
-
-<div className="bg-zinc-800 p-5 rounded-2xl text-center">
-💰 Earn
-</div>
-
-</div>
-
-</div>
-
-<div className="fixed bottom-0 left-0 right-0 bg-zinc-900 p-4 flex justify-around border-t border-zinc-700">
-
-<div className="text-center text-yellow-400">
-🏠<br/>Home
-</div>
-
-<div className="text-center text-yellow-400">
-📈<br/>Market
-</div>
-
-<div className="text-center text-yellow-400">
-💰<br/>Wallet
-</div>
-
-<div className="text-center text-yellow-400">
-👤<br/>Profile
-</div>
-
-</div>
-
-</div>
-
-);
+  );
 
 }
