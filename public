@@ -1,5 +1,7 @@
-<img 
-  src="/logo.png" 
-  alt="UMJAR Logo" 
-  style={{ width: "120px", height: "120px", marginBottom: "20px" }} 
-/>
+UMJAR-Mining-app/
+├── public/
+│   └── logo.png
+├── src/
+│   ├── App.jsx
+│   └── index.js
+└── package.json
