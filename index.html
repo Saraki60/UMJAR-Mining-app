@@ -1,26 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>UMJAR PREMIUM</title>
-
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
-}
-
 body{
-background:#000;
+background:#0f0f0f;
 background-image:
-radial-gradient(circle at top,#3a2a00,#000);
-color:white;
+linear-gradient(to bottom,#1b1400,#0f0f0f);
+font-family:Arial;
+margin:0;
 padding:15px;
+color:white;
 }
 
 .app{
@@ -30,66 +17,46 @@ padding-bottom:100px;
 }
 
 .top{
-background:linear-gradient(145deg,#111,#1a1a1a);
-border:1px solid rgba(255,215,0,0.3);
+background:rgba(30,30,30,0.95);
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,215,0,0.25);
 border-radius:35px;
 padding:25px;
+box-shadow:0 0 30px rgba(255,215,0,0.08);
 text-align:center;
-box-shadow:0 0 35px rgba(255,215,0,0.15);
-position:relative;
-overflow:hidden;
-}
-
-.top::before{
-content:"";
-position:absolute;
-width:220px;
-height:220px;
-background:rgba(255,215,0,0.08);
-border-radius:50%;
-top:-100px;
-right:-100px;
 }
 
 .logo{
-font-size:48px;
+font-size:52px;
 font-weight:bold;
-color:gold;
+color:#ffd700;
 letter-spacing:4px;
-text-shadow:0 0 20px gold;
-position:relative;
-z-index:2;
+text-shadow:0 0 18px rgba(255,215,0,0.5);
 }
 
 .small{
+color:#ddd;
 margin-top:5px;
-color:#ccc;
 font-size:14px;
-position:relative;
-z-index:2;
 }
 
 .user{
 margin-top:15px;
-color:#00ff99;
 font-size:14px;
-position:relative;
-z-index:2;
+color:#00ff99;
 }
 
 .input{
 width:100%;
-padding:15px;
+padding:16px;
 margin-top:12px;
 border:none;
 border-radius:18px;
-background:#181818;
+background:rgba(255,255,255,0.04);
+border:1px solid rgba(255,215,0,0.15);
 color:white;
 font-size:15px;
-border:1px solid rgba(255,215,0,0.2);
 outline:none;
-position:relative;
-z-index:2;
 }
 
 .btn{
@@ -98,45 +65,45 @@ padding:16px;
 margin-top:15px;
 border:none;
 border-radius:22px;
-font-size:17px;
-font-weight:bold;
 background:linear-gradient(145deg,#ffd700,#ffb700);
 color:black;
-box-shadow:0 0 20px rgba(255,215,0,0.4);
+font-size:17px;
+font-weight:bold;
 cursor:pointer;
 transition:0.3s;
-position:relative;
-z-index:2;
+box-shadow:0 0 18px rgba(255,215,0,0.25);
 }
 
 .btn:hover{
-transform:scale(1.03);
+transform:scale(1.02);
 }
 
 .balance{
-font-size:55px;
+font-size:58px;
 font-weight:bold;
 margin-top:25px;
 color:#ffd700;
-text-shadow:0 0 20px rgba(255,215,0,0.8);
-position:relative;
-z-index:2;
+}
+
+.usd{
+font-size:18px;
+color:#ccc;
+margin-top:5px;
 }
 
 .circle{
 width:190px;
 height:190px;
-border-radius:50%;
 margin:25px auto;
-background:conic-gradient(gold 0deg,#1b1b1b 0deg);
+border-radius:50%;
 display:flex;
-align-items:center;
 justify-content:center;
-box-shadow:
-0 0 40px rgba(255,215,0,0.5),
-inset 0 0 20px rgba(255,215,0,0.3);
-animation:glow 2s infinite alternate;
+align-items:center;
+background:
+conic-gradient(#ffd700 0deg,#2a2a2a 0deg);
 position:relative;
+box-shadow:
+0 0 30px rgba(255,215,0,0.25);
 }
 
 .circle::before{
@@ -144,22 +111,22 @@ content:"";
 position:absolute;
 width:145px;
 height:145px;
-background:#000;
+background:#111;
 border-radius:50%;
 }
 
-.mineText{
+.mine{
 position:relative;
 z-index:2;
-font-size:24px;
+font-size:22px;
 font-weight:bold;
-color:gold;
+color:#ffd700;
 }
 
 .timer{
 font-size:30px;
+color:#ffd700;
 margin-top:15px;
-color:gold;
 }
 
 .status{
@@ -168,24 +135,53 @@ font-size:15px;
 color:#00ff99;
 }
 
+.claim{
+margin-top:15px;
+background:linear-gradient(145deg,#ffcf33,#ffb300);
+padding:16px;
+border-radius:20px;
+font-weight:bold;
+color:black;
+font-size:18px;
+}
+
 .card{
-background:#101010;
-border:1px solid rgba(255,215,0,0.2);
+background:rgba(25,25,25,0.95);
+border:1px solid rgba(255,215,0,0.12);
 padding:20px;
-border-radius:30px;
+border-radius:28px;
 margin-top:20px;
-box-shadow:0 0 20px rgba(255,215,0,0.08);
+box-shadow:0 0 20px rgba(255,215,0,0.05);
 }
 
 .card h2{
-color:gold;
 margin-bottom:15px;
+color:#ffd700;
 }
 
 .row{
 display:flex;
 justify-content:space-between;
 margin-top:10px;
+}
+
+.green{
+color:#00ff99;
+font-weight:bold;
+}
+
+.banner{
+margin-top:20px;
+background:
+linear-gradient(to right,#2a1f00,#111);
+padding:22px;
+border-radius:30px;
+border:1px solid rgba(255,215,0,0.2);
+}
+
+.banner h2{
+color:#ffd700;
+margin-bottom:10px;
 }
 
 .nav{
@@ -195,38 +191,22 @@ left:0;
 right:0;
 max-width:430px;
 margin:auto;
-background:#111;
-padding:15px;
+background:rgba(20,20,20,0.98);
 display:flex;
 justify-content:space-around;
-border-radius:25px 25px 0 0;
-border-top:1px solid rgba(255,215,0,0.2);
+padding:16px;
+border-radius:28px 28px 0 0;
+border-top:1px solid rgba(255,215,0,0.15);
+backdrop-filter:blur(10px);
 }
 
 .nav div{
 text-align:center;
 font-size:13px;
-color:gold;
-}
-
-@keyframes glow{
-
-from{
-box-shadow:
-0 0 20px rgba(255,215,0,0.3);
-}
-
-to{
-box-shadow:
-0 0 55px rgba(255,215,0,0.8);
-}
-
+color:#ffd700;
 }
 
 </style>
-</head>
-
-<body>
 
 <div class="app">
 
@@ -240,103 +220,119 @@ UMJAR
 PREMIUM REAL MINING
 </div>
 
-<div class="user" id="userEmail">
-Not Logged In
+<div class="user">
+UMJAR_MINER
 </div>
 
-<input class="input" type="email" id="email" placeholder="Email">
+<input class="input" placeholder="Email">
 
-<input class="input" type="password" id="password" placeholder="Password">
+<input class="input" placeholder="Password">
 
-<button class="btn" onclick="signup()">
+<button class="btn">
 SIGN UP
 </button>
 
-<button class="btn" onclick="login()">
+<button class="btn">
 LOGIN
 </button>
 
-<button class="btn" onclick="logout()">
-LOGOUT
-</button>
+<div class="balance">
+16.0000 UMJ
+</div>
 
-<div class="balance" id="balance">
-0 UMJ
+<div class="usd">
+≈ $125.68 USD
 </div>
 
 <div class="circle">
-<div class="mineText">
+
+<div class="mine">
 MINING
 </div>
+
 </div>
 
-<div class="timer" id="timer">
-24:00:00
+<div class="timer">
+23:59:25
 </div>
 
-<div class="status" id="status">
-Mining Not Started
+<div class="status">
+● MINING ACTIVE
 </div>
 
-<button class="btn" onclick="startMining()">
-START MINING
-</button>
-
-<button class="btn" onclick="dailyBonus()">
-DAILY BONUS
-</button>
+<div class="claim">
+CLAIM MINING
+</div>
 
 </div>
 
 <div class="card">
 
-<h2>WALLET</h2>
+<h2>MINING STATS</h2>
 
 <div class="row">
-<div>Balance</div>
-
-<div id="walletBalance">
-0 UMJ
+<div>Today Mining</div>
+<div class="green">
++1.2500 UMJ
 </div>
 </div>
 
-<button class="btn" onclick="withdrawUMJ()">
-WITHDRAW
+<div class="row">
+<div>Total Mined</div>
+<div>
+16.0000 UMJ
+</div>
+</div>
+
+</div>
+
+<div class="banner">
+
+<h2>INVITE & EARN BIG</h2>
+
+<p>
+Invite friends and earn commissions.
+</p>
+
+<button class="btn">
+INVITE NOW
 </button>
 
 </div>
 
 <div class="card">
 
-<h2>REFERRAL</h2>
+<h2>MINING POWER</h2>
 
-<div id="refLink">
-https://umjar.app/ref/UMJ001
+<div class="row">
+<div>Power</div>
+<div class="green">
+100 GH/s
+</div>
 </div>
 
-<button class="btn" onclick="copyLink()">
-COPY LINK
-</button>
-
+<div class="row">
+<div>Status</div>
+<div class="green">
+ACTIVE
 </div>
-
-<div class="card">
-
-<h2>INVESTMENT</h2>
-
-<button class="btn" onclick="startInvestment()">
-START INVESTMENT
-</button>
+</div>
 
 </div>
 
 <div class="card">
 
-<h2>NFT MARKETPLACE</h2>
+<h2>RECENT TRANSACTIONS</h2>
 
-<button class="btn" onclick="buyNFT(500)">
-BUY NFT
-</button>
+<div class="row">
+<div>
+Mining Reward
+</div>
+
+<div class="green">
++1.0000 UMJ
+</div>
+</div>
 
 </div>
 
@@ -361,303 +357,3 @@ BUY NFT
 </div>
 
 </div>
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-
-getAuth,
-createUserWithEmailAndPassword,
-signInWithEmailAndPassword,
-signOut,
-onAuthStateChanged
-
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-const firebaseConfig = {
-
-apiKey: "AIzaSyAmLTvCWirFSpbpEpQTDX-4p3JAarIr3R4",
-
-authDomain: "umjar-mining.firebaseapp.com",
-
-projectId: "umjar-mining",
-
-storageBucket: "umjar-mining.firebasestorage.app",
-
-messagingSenderId: "908328509401",
-
-appId: "1:908328509401:web:7e7e8ceb078efe500c43c8"
-
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-window.signup = function(){
-
-const email =
-document.getElementById("email").value;
-
-const password =
-document.getElementById("password").value;
-
-createUserWithEmailAndPassword(auth,email,password)
-
-.then(()=>{
-
-alert("Account Created");
-
-})
-
-.catch((error)=>{
-
-alert(error.message);
-
-});
-
-}
-
-window.login = function(){
-
-const email =
-document.getElementById("email").value;
-
-const password =
-document.getElementById("password").value;
-
-signInWithEmailAndPassword(auth,email,password)
-
-.then(()=>{
-
-alert("Login Successful");
-
-})
-
-.catch((error)=>{
-
-alert(error.message);
-
-});
-
-}
-
-window.logout = function(){
-
-signOut(auth)
-
-.then(()=>{
-
-alert("Logged Out");
-
-});
-
-}
-
-onAuthStateChanged(auth,(user)=>{
-
-if(user){
-
-document.getElementById("userEmail").innerHTML =
-user.email;
-
-}else{
-
-document.getElementById("userEmail").innerHTML =
-"Not Logged In";
-
-}
-
-});
-
-let balance =
-parseInt(localStorage.getItem("umjarBalance")) || 0;
-
-let mining =
-localStorage.getItem("mining") === "true";
-
-let miningTime =
-parseInt(localStorage.getItem("miningTime")) || 86400;
-
-let miningInterval = null;
-let timerInterval = null;
-
-updateBalance();
-updateTimer();
-
-if(mining){
-
-document.getElementById("status").innerHTML =
-"Mining Active";
-
-startIntervals();
-
-}
-
-function updateBalance(){
-
-document.getElementById("balance").innerHTML =
-balance + " UMJ";
-
-document.getElementById("walletBalance").innerHTML =
-balance + " UMJ";
-
-localStorage.setItem("umjarBalance",balance);
-
-}
-
-function updateTimer(){
-
-let h =
-Math.floor(miningTime/3600);
-
-let m =
-Math.floor((miningTime%3600)/60);
-
-let s =
-miningTime%60;
-
-document.getElementById("timer").innerHTML =
-String(h).padStart(2,"0")+":"+
-String(m).padStart(2,"0")+":"+
-String(s).padStart(2,"0");
-
-}
-
-window.startMining = function(){
-
-if(mining){
-
-alert("Mining Already Running");
-
-return;
-
-}
-
-mining = true;
-
-localStorage.setItem("mining","true");
-
-document.getElementById("status").innerHTML =
-"Mining Active";
-
-startIntervals();
-
-}
-
-function startIntervals(){
-
-clearInterval(miningInterval);
-clearInterval(timerInterval);
-
-miningInterval = setInterval(()=>{
-
-balance += 2;
-
-updateBalance();
-
-},5000);
-
-timerInterval = setInterval(()=>{
-
-if(miningTime <= 0){
-
-clearInterval(miningInterval);
-clearInterval(timerInterval);
-
-mining = false;
-
-localStorage.setItem("mining","false");
-
-document.getElementById("status").innerHTML =
-"Mining Finished";
-
-return;
-
-}
-
-miningTime--;
-
-localStorage.setItem("miningTime",miningTime);
-
-updateTimer();
-
-},1000);
-
-}
-
-window.dailyBonus = function(){
-
-balance += 100;
-
-updateBalance();
-
-alert("100 UMJ Added");
-
-}
-
-window.copyLink = function(){
-
-navigator.clipboard.writeText(
-document.getElementById("refLink").innerText
-);
-
-alert("Referral Link Copied");
-
-}
-
-window.startInvestment = function(){
-
-if(balance < 500){
-
-alert("You Need 500 UMJ");
-
-return;
-
-}
-
-balance -= 500;
-
-updateBalance();
-
-alert("Investment Started");
-
-}
-
-window.buyNFT = function(price){
-
-if(balance < price){
-
-alert("Not Enough UMJ");
-
-return;
-
-}
-
-balance -= price;
-
-updateBalance();
-
-alert("NFT Purchased");
-
-}
-
-window.withdrawUMJ = function(){
-
-if(balance < 1000){
-
-alert("Minimum Withdrawal Is 1000 UMJ");
-
-return;
-
-}
-
-alert("Withdrawal Request Sent");
-
-}
-
-</script>
-
-</body>
-</html>
