@@ -1,11 +1,21 @@
 const router = require("express").Router();
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res) => {
-  res.json("Register Route");
+
+  res.json({
+    message: "Register Success"
+  });
+
 });
 
 router.post("/login", async (req, res) => {
-  res.json("Login Route");
+
+  res.json({
+    message: "Login Success"
+  });
+
 });
 
 module.exports = router;
