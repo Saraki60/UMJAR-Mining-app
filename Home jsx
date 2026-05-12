@@ -1,0 +1,10 @@
+import React from 'react';
+
+export default function Home() {
+  return (
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h1>Welcome to UMJAR Mining App</h1>
+      <p>This is your Home page. Navigate using the buttons in App.jsx.</p>
+    </div>
+  );
+}
