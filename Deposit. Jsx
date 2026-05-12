@@ -1,0 +1,10 @@
+import React from 'react';
+
+export default function Deposit() {
+  return (
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h1>Deposit Page</h1>
+      <p>Here you can deposit funds to your account.</p>
+    </div>
+  );
+}
