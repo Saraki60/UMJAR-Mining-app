@@ -1,7 +1,6 @@
-// src/App.jsx
 import React, { useState } from 'react';
 
-// Import duk components dinka
+// Import duk components ɗinka
 import Home from './Home.jsx';
 import Deposit from './Deposit.jsx';
 import Profile from './Profile.jsx';
@@ -34,8 +33,7 @@ export default function App() {
 
   return (
     <div>
-      {/* Navigation Buttons */}
-      <nav style={{ marginBottom: '20px' }}>
+      <nav style={{ display: 'flex', justifyContent: 'space-around', padding: '10px', background: '#222', color: '#fff' }}>
         <button onClick={() => setPage('home')}>Home</button>
         <button onClick={() => setPage('deposit')}>Deposit</button>
         <button onClick={() => setPage('profile')}>Profile</button>
@@ -43,9 +41,9 @@ export default function App() {
         <button onClick={() => setPage('wallet')}>Wallet</button>
         <button onClick={() => setPage('withdraw')}>Withdraw</button>
       </nav>
-
-      {/* Render current page */}
-      {renderPage()}
+      <div style={{ padding: '20px' }}>
+        {renderPage()}
+      </div>
     </div>
   );
 }
