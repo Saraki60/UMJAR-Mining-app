@@ -1,23 +1,51 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+// src/App.jsx
+import React, { useState } from 'react';
 
-import Home from "./Home";
-import Wallet from "./Wallet";
-import Deposit from "./Deposit";
-import Withdraw from "./Withdraw";
-import Profile from "./Profile";
-import Referral from "./Referral";
+// Import duk components dinka
+import Home from './Home.jsx';
+import Deposit from './Deposit.jsx';
+import Profile from './Profile.jsx';
+import Referral from './Referral.jsx';
+import Wallet from './Wallet.jsx';
+import Withdraw from './Withdraw.jsx';
 
 export default function App() {
+  const [page, setPage] = useState('home');
+
+  // Simple navigation function
+  const renderPage = () => {
+    switch(page) {
+      case 'home':
+        return <Home />;
+      case 'deposit':
+        return <Deposit />;
+      case 'profile':
+        return <Profile />;
+      case 'referral':
+        return <Referral />;
+      case 'wallet':
+        return <Wallet />;
+      case 'withdraw':
+        return <Withdraw />;
+      default:
+        return <Home />;
+    }
+  };
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/wallet" element={<Wallet />} />
-        <Route path="/deposit" element={<Deposit />} />
-        <Route path="/withdraw" element={<Withdraw />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/referral" element={<Referral />} />
-      </Routes>
-    </BrowserRouter>
+    <div>
+      {/* Navigation Buttons */}
+      <nav style={{ marginBottom: '20px' }}>
+        <button onClick={() => setPage('home')}>Home</button>
+        <button onClick={() => setPage('deposit')}>Deposit</button>
+        <button onClick={() => setPage('profile')}>Profile</button>
+        <button onClick={() => setPage('referral')}>Referral</button>
+        <button onClick={() => setPage('wallet')}>Wallet</button>
+        <button onClick={() => setPage('withdraw')}>Withdraw</button>
+      </nav>
+
+      {/* Render current page */}
+      {renderPage()}
+    </div>
   );
 }
